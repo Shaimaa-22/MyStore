@@ -21,7 +21,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+app.MapGet("/", () => "MyStore API is running!");
+
 app.UseAuthorization();
 app.MapControllers();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Clear();
+app.Urls.Add($"http://*:{port}");
+
 app.Run();
